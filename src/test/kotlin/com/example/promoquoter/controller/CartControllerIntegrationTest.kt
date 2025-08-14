@@ -34,13 +34,11 @@ class CartControllerIntegrationTest {
     @Test
     fun `should create product and generate quote`() {
         // Create product first
-        val productRequest = listOf(
-            CreateProductRequest(
-                name = "Test Product",
-                category = ProductCategory.ELECTRONICS,
-                price = BigDecimal("99.99"),
-                stock = 10
-            )
+        val productRequest = CreateProductRequest(
+            name = "Test Product",
+            category = ProductCategory.ELECTRONICS,
+            price = BigDecimal("99.99"),
+            stock = 10
         )
 
         val productResult = mockMvc.perform(
@@ -52,8 +50,8 @@ class CartControllerIntegrationTest {
 
         val productResponse = objectMapper.readValue(
             productResult.response.contentAsString,
-            Array<ProductResponse>::class.java
-        )[0]
+            ProductResponse::class.java
+        )
 
         // Generate quote
         val quoteRequest = CartQuoteRequest(

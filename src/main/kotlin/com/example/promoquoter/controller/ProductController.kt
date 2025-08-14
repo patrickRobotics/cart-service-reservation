@@ -16,16 +16,16 @@ import java.util.UUID
 class ProductController(private val productService: ProductService) {
     private val logger = LoggerFactory.getLogger(ProductController::class.java)
 
-    @PostMapping
+    @PostMapping("/batch")
     @ResponseStatus(HttpStatus.CREATED)
     fun createProducts(@Valid @RequestBody requests: List<CreateProductRequest>): List<ProductResponse> {
         logger.info("Received request to create ${requests.size} products")
         val createdProducts = productService.createProducts(requests)
         logger.info("Created ${createdProducts.size} products successfully")
         return createdProducts
-    }
+}
 
-    @PostMapping("/single")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createProduct(@Valid @RequestBody request: CreateProductRequest): ProductResponse {
         logger.info("Processing request to create product ${request.name}")

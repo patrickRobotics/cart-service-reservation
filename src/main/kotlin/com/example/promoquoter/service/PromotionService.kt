@@ -28,19 +28,7 @@ class PromotionService(private val promotionRepository: PromotionRepository) {
 
         val savedPromotions = promotionRepository.saveAll(promotions)
 
-        return savedPromotions.map { promotion ->
-            PromotionResponse(
-                id = promotion.id!!,
-                type = promotion.type,
-                targetCategory = promotion.targetCategory,
-                targetProductId = promotion.targetProductId,
-                discountPercentage = promotion.discountPercentage,
-                buyQuantity = promotion.buyQuantity,
-                getQuantity = promotion.getQuantity,
-                priority = promotion.priority,
-                active = promotion.active
-            )
-        }
+        return savedPromotions.map { mapToResponse(it) }
     }
 
     private fun validatePromotionRequest(request: CreatePromotionRequest) {
@@ -56,5 +44,34 @@ class PromotionService(private val promotionRepository: PromotionRepository) {
             }
             else -> throw IllegalArgumentException("Unsupported promotion type: ${request.type}")
         }
+    }
+
+    fun createPromotion(request: CreatePromotionRequest): PromotionResponse {
+        val promotion = Promotion(
+            type = request.type,
+            targetCategory = request.targetCategory,
+            targetProductId = request.targetProductId,
+            discountPercentage = request.discountPercentage,
+            buyQuantity = request.buyQuantity,
+            getQuantity = request.getQuantity,
+            priority = request.priority
+        )
+
+        val savedPromotion = promotionRepository.save(promotion)
+        return mapToResponse(savedPromotion)
+    }
+
+    private fun mapToResponse(promotion: Promotion): PromotionResponse {
+        return PromotionResponse(
+            id = promotion.id!!,
+            type = promotion.type,
+            targetCategory = promotion.targetCategory,
+            targetProductId = promotion.targetProductId,
+            discountPercentage = promotion.discountPercentage,
+            buyQuantity = promotion.buyQuantity,
+            getQuantity = promotion.getQuantity,
+            priority = promotion.priority,
+            active = promotion.active
+        )
     }
 }

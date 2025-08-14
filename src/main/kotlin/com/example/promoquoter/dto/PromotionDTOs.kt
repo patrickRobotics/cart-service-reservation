@@ -28,6 +28,15 @@ data class CreatePromotionRequest(
     val priority: Int = 100
 )
 
+data class UpdatePromotionRequest(
+    val type: PromotionType? = null,
+    val targetCategory: ProductCategory? = null,
+    val targetProductId: UUID? = null,
+    val discountPercentage: BigDecimal? = null,
+    val buyQuantity: Int? = null,
+    val getQuantity: Int? = null,
+    val priority: Int? = null
+)
 
 data class PromotionResponse(
     val id: UUID,
