@@ -16,6 +16,7 @@ import org.springframework.validation.ObjectError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.method.annotation.HandlerMethodValidationException
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import java.time.LocalDateTime
 
@@ -54,6 +55,31 @@ class GlobalExceptionHandler {
             error = "Validation Failed",
             message = "Invalid input parameters",
             details = details
+        )
+
+        return ResponseEntity.badRequest().body(errorResponse)
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException::class)
+    fun handleHandlerMethodValidationException(ex: HandlerMethodValidationException): ResponseEntity<ErrorResponse> {
+        val fieldErrors = mutableMapOf<String, String>()
+
+        ex.allErrors.forEach { error ->
+            val fieldName = when (error) {
+                is FieldError -> error.field
+                is ObjectError -> error.objectName
+                else -> "unknown field"
+            }
+            val errorMessage = error.defaultMessage ?: "Invalid value"
+            fieldErrors[fieldName] = errorMessage
+        }
+
+        val errorResponse = ErrorResponse(
+            timestamp = LocalDateTime.now(),
+            status = HttpStatus.BAD_REQUEST.value(),
+            error = "Validation Failed",
+            message = "Invalid method parameters",
+            details = mapOf("fieldErrors" to fieldErrors)
         )
 
         return ResponseEntity.badRequest().body(errorResponse)

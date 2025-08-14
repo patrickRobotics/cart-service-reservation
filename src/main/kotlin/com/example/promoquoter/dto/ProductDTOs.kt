@@ -30,6 +30,18 @@ data class CreateProductRequest(
     val stock: Int
 )
 
+data class UpdateProductRequest(
+    @field:NotBlank(message = "Product name cannot be blank")
+    val name: String? = null,
+
+    val category: ProductCategory? = null,
+
+    @field:DecimalMin(value = "0.01", message = "Price must be at least 0.01")
+    val price: BigDecimal? = null,
+
+    @field:Min(value = 0, message = "Stock cannot be negative")
+    val stock: Int? = null
+)
 
 data class ProductResponse(
     val id: UUID,

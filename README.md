@@ -51,7 +51,19 @@ Access H2 console at `http://localhost:8080/h2-console`
 
 ## API Examples
 
-### 1. Create Products
+### 1. Create a single Product
+```bash
+curl -X POST http://localhost:8080/products/single \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Gaming Laptop",
+    "category": "ELECTRONICS",
+    "price": 1299.99,
+    "stock": 5
+  }'
+```
+
+### 2. Create Products in batch
 
 ```bash
 curl -X POST http://localhost:8080/products \
@@ -87,7 +99,7 @@ curl -X POST http://localhost:8080/promotions \
   -H "Content-Type: application/json" \
   -d '[{
     "type": "BUY_X_GET_Y",
-    "targetProductId": "your-product-id-here",
+    "targetProductId": "enter-product-id-here",
     "buyQuantity": 2,
     "getQuantity": 1,
     "priority": 5
@@ -101,7 +113,7 @@ curl -X POST http://localhost:8080/cart/quote \
   -H "Content-Type: application/json" \
   -d '{
     "items": [{
-      "productId": "your-product-id-here",
+      "productId": "enter-product-id-here",
       "qty": 2
     }],
     "customerSegment": "REGULAR"
@@ -116,12 +128,41 @@ curl -X POST http://localhost:8080/cart/confirm \
   -H "Idempotency-Key: unique-key-123" \
   -d '{
     "items": [{
-      "productId": "your-product-id-here", 
+      "productId": "enter-product-id-here", 
       "qty": 2
     }],
     "customerSegment": "REGULAR"
   }'
 ```
+
+### 5. Fetch/display all products
+
+```bash
+curl -X GET http://localhost:8080/products -H "Accept: application/json"
+```
+
+### 6. Fetch a product by its ID
+
+```bash
+curl -X GET http://localhost:8080/products/enter-product-id-here -H "Accept: application/json" 
+```
+
+### 7. Update a single product data
+
+```bash
+curl -X PUT "http://localhost:8080/product/enter-product-id-here" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Bluetooth Mouse",
+    "price": 199.99
+  }'
+```
+
+### 8. Delete/remove a product by its ID
+```bash
+curl -X DELETE "http://localhost:8080/product/enter-product-id-here"
+```
+
 
 ## Testing
 
