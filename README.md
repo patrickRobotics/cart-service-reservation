@@ -164,6 +164,9 @@ curl -X DELETE "http://localhost:8080/product/enter-product-id-here"
 ```
 
 
+## Postman collection
+Here is a link to a [postman collection](https://galactic-crater-247223.postman.co/workspace/My-Workspace~14987ab9-4156-4e8c-869d-1fc3a34a4a9d/collection/2496867-d1dc8d3b-8450-4741-b55b-f40b6172777b?action=share&creator=2496867) with the APIs
+
 ## Testing
 
 ```bash
